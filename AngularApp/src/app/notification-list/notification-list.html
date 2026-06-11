@@ -1,0 +1,20 @@
+<cdk-virtual-scroll-viewport [itemSize]="itemSize" [style.height.px]="viewportHeightPx">
+<ul class="list-group" style="max-width: 400px;">
+    @if(notSer._notifications.value.size>0){
+        @for (item of notSer._notifications.value.values(); track $index) {
+            
+  <li class="list-group-item p-2 d-flex align-items-center btn btn-text p-0" (click)="read(item.Id)" [ngClass]="{ 'bg-secondary': item.Read }">
+    <a class="flex-grow-1 text-decoration-none text-body menu-item" >
+      <div class="d-flex gap-2 align-items-center" >
+        <span>
+          {{item.Message}}
+        </span>
+      </div>
+    </a>
+</li>
+        }
+    }@else{
+        <h1>Sorry Nothing</h1>
+    }
+</ul>
+</cdk-virtual-scroll-viewport>

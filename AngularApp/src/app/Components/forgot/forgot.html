@@ -1,0 +1,52 @@
+<div class="container d-flex justify-content-center align-items-center min-vh-100">
+  <div class="card shadow-lg p-4 rounded-4" style="max-width: 420px; width: 100%;">
+    <form [formGroup]="forgetForm" (ngSubmit)="submitClicked()" novalidate>
+      <h2 class="text-center mb-4 fw-bold text-primary">Recover Account</h2>
+
+
+        <div class="mb-3">
+        <label for="eml" class="form-label">E-mail</label>
+        <input
+          type="email"
+          id="eml"
+          class="form-control"
+          [class.is-invalid]="forgetForm.controls.email.invalid && (forgetForm.controls.email.dirty || forgetForm.controls.email.touched)"
+          placeholder="Enter email"
+          formControlName="email"
+          required
+        />
+        @if (forgetForm.controls.email.errors?.['required']) 
+        {
+        <div class="invalid-feedback" >
+          Email is required.
+        </div>
+    }
+        @if (forgetForm.controls.email.errors?.['email']) 
+        {
+        <div class="invalid-feedback" >
+          Please enter a valid email address.
+        </div>
+    }
+      </div>
+
+      <!-- Error message from backend -->
+       @if (invalidEmail) {
+      <div  class="alert alert-danger py-2">
+        Given email isn't associated with an account
+      </div>}
+
+      @if (validEmail) {
+      <div  class="text-decoration-none text-primary fw-medium">
+        Recovery email sent
+      </div>}
+
+       <button
+        type="submit"
+        class="btn btn-primary w-100 rounded-0"
+        [disabled]="!forgetForm.valid"
+      >
+        Send
+      </button>
+    </form>
+  </div>
+</div>

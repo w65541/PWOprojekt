@@ -1,0 +1,51 @@
+<div class="container my-4 p-0">
+
+  <input
+          type="text"
+          id="searchText"
+          class="form-control rounded-0"
+          placeholder=""
+          [(ngModel)]="searchText"
+          autofocus
+        />
+
+
+  <div class="table-responsive">
+
+    <cdk-virtual-scroll-viewport [itemSize]="itemSize" [style.height.px]="viewportHeightPx">
+
+      <table class="table table-striped table-hover table-bordered rounded-0 m-0">
+
+        <thead class="table-primary text-center sticky-top">
+          <tr>
+            <th scope="col">#</th>
+            <th scope="col">Login</th>
+            <th scope="col">Email</th>
+            <th scope="col">Type</th>
+            <th scope="col">Creation Date</th>
+            <th>Details</th>
+          </tr>
+        </thead>
+
+        <tbody>
+          @for (user of users | filterAll:searchText; track $index) {
+          <tr class="text-center">
+            <td>{{ user.id }}</td>
+            <td>{{ user.login }}</td>
+            <td>{{ user.email }}</td>
+            <td>{{ user.type }}</td>
+            <td>{{ user.creationDate | date:'short' }}</td>
+            <td>
+              <button class="btn btn-sm btn-primary fw-semibold shadow-sm" (click)="goToDetails(user.id)">
+                ...
+              </button>
+            </td>
+          </tr>
+          }
+        </tbody>
+
+      </table>
+    </cdk-virtual-scroll-viewport>
+    
+  </div>
+</div>

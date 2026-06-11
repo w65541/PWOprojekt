@@ -1,0 +1,40 @@
+<nav class="navbar navbar-expand navbar-dark bg-primary px-4">
+  <div class="container-fluid">
+    <a class="navbar-brand">MyApp</a>
+
+    <ul class="navbar-nav ms-auto flex-row gap-3">
+
+      @if(headerService.logged())
+      {
+        <li class="nav-item">
+        <a class="nav-link" routerLink="/users" routerLinkActive="active">Users</a>
+      </li>
+      <li class="nav-item">
+        <a class="nav-link"  routerLink="/pieChart" routerLinkActive="active">Pie Chart</a>
+      </li>
+      <li class="nav-item">
+        <a class="nav-link"  routerLink="/DAChart" routerLinkActive="active">Daily activity Chart</a>
+      </li>
+      <li class="nav-item">
+        <a class="nav-link" (click)="logout()" routerLink="/login" routerLinkActive="active">Logout</a>
+      </li>
+      <li class="nav-item">
+      <app-notification-bell> </app-notification-bell>
+    </li>
+      }@else{
+        <li class="nav-item">
+        <a class="nav-link" routerLink="/userCreate" routerLinkActive="active">New User</a>
+      </li>
+        <li class="nav-item">
+        <a class="nav-link"  routerLink="/login" routerLinkActive="active">Login</a>
+      </li>
+      }
+      <!--
+      <li class="nav-item">
+        <a class="nav-link" routerLink="/userDetails" routerLinkActive="active">Page2</a>
+      </li>
+      -->
+      
+    </ul>
+  </div>
+</nav>
