@@ -1,0 +1,8 @@
+.notif-link {
+  position: relative;
+  z-index: 2;
+}
+ 
+.notif-link:hover {
+  text-decoration: underline;
+}

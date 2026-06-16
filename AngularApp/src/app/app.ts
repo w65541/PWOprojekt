@@ -8,12 +8,14 @@ import { UsersPage } from "./Components/users-page/users-page";
 import { NgxChartsModule } from '@swimlane/ngx-charts';
 import { CommonModule } from '@angular/common';
 import { NotificationBell } from "./notification-bell/notification-bell";
+import { ReactiveFormsModule } from '@angular/forms';
 
 @Component({
   selector: 'app-root',
   imports: [RouterOutlet, Header,
     CommonModule,
-    NgxChartsModule],
+    NgxChartsModule,
+    ReactiveFormsModule],
   templateUrl: './app.html',
   styleUrl: './app.css'
 })

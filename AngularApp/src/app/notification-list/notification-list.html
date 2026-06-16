@@ -7,7 +7,7 @@
     <a class="flex-grow-1 text-decoration-none text-body menu-item" >
       <div class="d-flex gap-2 align-items-center" >
         <span>
-          {{item.Message}}
+           <span [innerHTML]="item.Message | linkify"></span>
         </span>
       </div>
     </a>

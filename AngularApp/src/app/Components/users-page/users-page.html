@@ -1,5 +1,5 @@
 <div class="container my-4 p-0">
-
+<div class="d-flex gap-2 align-items-start mb-3 flex-wrap">
   <input
           type="text"
           id="searchText"
@@ -9,7 +9,11 @@
           autofocus
         />
 
-
+    <button
+      class="btn btn-outline-primary fw-semibold shadow-sm"
+      (click)="requestExport()"
+    >Export</button>
+</div>
   <div class="table-responsive">
 
     <cdk-virtual-scroll-viewport [itemSize]="itemSize" [style.height.px]="viewportHeightPx">

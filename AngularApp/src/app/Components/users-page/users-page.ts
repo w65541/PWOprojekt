@@ -5,6 +5,10 @@ import { Router } from '@angular/router';
 import { ScrollingModule } from '@angular/cdk/scrolling';
 import { FilterAllPipe } from "../../Pipes/filter-all-pipe";
 import { FormsModule } from "@angular/forms";
+import { HttpClient, HttpParams } from '@angular/common/http';
+import { environment } from '../../../environments/environment.development';
+
+
 @Component({
   selector: 'app-users-page',
   imports: [DatePipe, ScrollingModule, FilterAllPipe, FormsModule],
@@ -19,7 +23,9 @@ export class UsersPage {
   searchText: any;
 
 
-  constructor(private userService:UserService,private router:Router){}
+  constructor(private userService:UserService,private router:Router
+    ,private httpClient: HttpClient){}
+
   ngOnInit(){
     this.userService.getUsers()
     .subscribe({ 
@@ -37,5 +43,22 @@ export class UsersPage {
     this.router.navigate(['/userDetails', id]);
   }
 
+  requestExport() {
 
+    let currentUser = localStorage.getItem('currentUser');
+
+    let params = new HttpParams()
+      .set("userId", "5")
+      .set("dataType", "users");
+ 
+    this.httpClient.post(`${environment.apiUrl}DataExport/request-export`, {}, { params })
+      .subscribe({
+        next: (response: any) => {
+          
+        },
+      error: err => {
+        console.error(err);
+      }
+    });
+  }
 }

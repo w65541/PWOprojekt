@@ -8,7 +8,7 @@ import { Observable } from 'rxjs';
 export class UserService {
   users: Array<any> = [];
   constructor(private httpClient:HttpClient){}
-
+  
   getSetUsers(){
     return [
     {id:1,Login:"aaaa", Email:"faf@esf", Type:1, CreationDate:Date.now()},
@@ -31,5 +31,20 @@ export class UserService {
     return this.httpClient.get<Array<any>>(`${environment.apiUrl}User/get`,{params});
   }
 
-  
+  updateUser(id: number, dto: UpdateUserDto): Observable<any> {
+    let params = new HttpParams().set('id', id);
+    return this.httpClient.put<any>(`${environment.apiUrl}User/update`, dto, { params });
+  }
+
+  archiveUser(id: number, archId: number): Observable<any> {
+    let params = new HttpParams().set('id', id).set('archId', archId);
+    return this.httpClient.post<any>(`${environment.apiUrl}User/archive`, {}, { params });
+  }
+}
+
+export interface UpdateUserDto {
+  login?: string;
+  email?: string;
+  password?: string;
+  typeId?: number;
 }

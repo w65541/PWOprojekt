@@ -3,10 +3,11 @@ import { Component } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { NotificationSseService } from '../Services/notification-sse-service';
 import { NgClass } from '@angular/common';
+import { LinkifyPipe } from '../Pipes/linkify-pipe';
 
 @Component({
   selector: 'app-notification-list',
-  imports: [ ScrollingModule, FormsModule,NgClass],
+  imports: [ ScrollingModule, FormsModule,NgClass, LinkifyPipe],
   templateUrl: './notification-list.html',
   styleUrl: './notification-list.css'
 })

@@ -1,0 +1,19 @@
+.bi-bell {
+  color: #ffffff;
+  vertical-align: middle;
+  line-height: 1;
+}
+ 
+.bi-bell:hover {
+  color: #f0f0f0;
+}
+ 
+.dropdown-menu.show {
+  position: absolute;
+  top: 100%;
+  margin-top: 0.5rem;
+  z-index: 1050;
+  background-color: #ffffff;
+  border: 1px solid rgba(0, 0, 0, 0.15);
+}
+ 

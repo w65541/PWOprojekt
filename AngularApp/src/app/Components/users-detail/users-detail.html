@@ -1,88 +1,127 @@
 <div class="container my-4">
-    <button class="btn btn-primary px-4 py-2 fw-semibold shadow-sm" (click)="back()">Back</button>
-    <!--
-  <div class="table-responsive">
-    <table class="table table-striped table-hover table-bordered rounded-0">
-      <thead class="table-primary text-center">
-        <tr>
-          <th scope="col">#</th>
-          <th scope="col">Login</th>
-          <th scope="col">Email</th>
-          <th scope="col">Type</th>
-          <th scope="col">Creation Date</th>
-        </tr>
-      </thead>
-      <tbody>
-       
-        <tr  class="text-center">
-          <td>{{ user.id }}</td>
-          <td>{{ user.login }}</td>
-          <td>{{ user.email }}</td>
-          <td>{{ user.type }}</td>
-          <td>{{ user.creationDate}}</td>
-        </tr>
-
-        
-    </tbody>
-    </table>-->
-</div>
-
-<div class="container d-flex justify-content-center align-items-center min-vh-50">
-  <div class="card shadow-lg p-4 rounded-4" style="max-width: 620px; width: 100%;">
-    <form  novalidate>
-      <h2 class="text-center mb-4 fw-bold text-primary">Account Details</h2>
-
-
-        <div class="mb-3">
-        <label for="eml" class="form-label">Id: {{ user.id }}</label>
-        </div>
-        <div class="mb-3">
-        <label for="eml" class="form-label">Login {{ user.login }}</label>
-        </div>
-        <div class="mb-3">
-        <label for="eml" class="form-label">E-mail {{ user.email }}</label>
-        </div>
-        <div class="mb-3">
-        <label for="eml" class="form-label">Type Id {{ user.typeId}}</label>
-        </div>
-        <div class="mb-3">
-        <label for="eml" class="form-label">Type {{ user.type }}</label>
-        </div>
-        
-        
-        <div class="mb-3">
-        <label for="eml" class="form-label">Creation Date {{ user.creationDate | date:'long'}}</label>
-        </div>
-        <div class="mb-3">
-        <label for="eml" class="form-label">Is active {{ user.isActive}}</label>
-        </div>
-        <div class="mb-3">
-        <label for="eml" class="form-label">Last login date {{ user.lastLoginDate | date:'long'}}</label>
-        </div>
-        <div class="mb-3">
-        <label for="eml" class="form-label">Archive Date {{ user.archiveDate | date:'long'}}</label>
-        </div>
-        <div class="mb-3">
-        <label for="eml" class="form-label">Archiver Id {{ user.archiverId }}</label>
-        </div>
-      <!-- Error message from backend 
-       @if (invalidEmail) {
-      <div  class="alert alert-danger py-2">
-        Given email isn't associated with an account
-      </div>}
-
-      @if (validEmail) {
-      <div  class="text-decoration-none text-primary fw-medium">
-        Recovery email sent
-      </div>}
-
-       <button
-        type="submit"
-        class="btn btn-primary w-100 rounded-0"
-        [disabled]="!forgetForm.valid"
-      >
-        Send
-      </button>-->
-    </form>
+  <div class="d-flex gap-2 mb-3">
+    <button class="btn btn-primary px-4 fw-semibold shadow-sm" (click)="back()">
+      ← Wstecz
+    </button>
+    @if (user) {
+      <button class="btn fw-semibold shadow-sm"
+              [class.btn-secondary]="editMode"
+              [class.btn-warning]="!editMode"
+              (click)="toggleEdit()">
+        {{ editMode ? 'Anuluj edycję' : 'Edytuj' }}
+      </button>
+      @if (!editMode) {
+        <button class="btn btn-danger fw-semibold shadow-sm ms-auto" (click)="archive()">
+          Archiwizuj
+        </button>
+      }
+    }
   </div>
+
+  @if (saveSuccess) {
+    <div class="alert alert-success py-2">Zapisano pomyślnie!</div>
+  }
+  @if (saveError) {
+    <div class="alert alert-danger py-2">{{ saveError }}</div>
+  }
 </div>
+
+@if (user) {
+  <div class="container d-flex justify-content-center align-items-start">
+    <div class="card shadow-lg p-4 rounded-4" style="max-width: 680px; width: 100%;">
+
+      
+      @if (!editMode) {
+        <h2 class="text-center mb-4 fw-bold text-primary">Szczegóły konta</h2>
+
+        <table class="table table-borderless">
+          <tbody>
+            <tr><th class="text-muted" style="width:40%">ID</th><td>{{ user.id }}</td></tr>
+            <tr><th class="text-muted">Login</th><td>{{ user.login }}</td></tr>
+            <tr><th class="text-muted">E-mail</th><td>{{ user.email }}</td></tr>
+            <tr><th class="text-muted">Typ (ID)</th><td>{{ user.typeId }}</td></tr>
+            <tr><th class="text-muted">Typ</th><td>{{ user.type }}</td></tr>
+            <tr><th class="text-muted">Aktywny</th>
+              <td>
+                <span class="badge" [class.bg-success]="user.isActive" [class.bg-secondary]="!user.isActive">
+                  {{ user.isActive ? 'Tak' : 'Nie' }}
+                </span>
+              </td>
+            </tr>
+            <tr><th class="text-muted">Data utworzenia</th><td>{{ user.creationDate | date:'long' }}</td></tr>
+            <tr><th class="text-muted">Ostatnie logowanie</th><td>{{ user.lastLoginDate | date:'long' }}</td></tr>
+            <tr><th class="text-muted">Data archiwizacji</th><td>{{ user.archiveDate ? (user.archiveDate | date:'long') : '—' }}</td></tr>
+            <tr><th class="text-muted">Archiwizował (ID)</th><td>{{ user.archiverId ?? '—' }}</td></tr>
+          </tbody>
+        </table>
+      }
+
+      @if (editMode) {
+        <h2 class="text-center mb-4 fw-bold text-warning">Edytuj konto</h2>
+
+        <form [formGroup]="editForm" (ngSubmit)="save()" novalidate>
+
+          <!-- Login -->
+          <div class="mb-3">
+            <label class="form-label fw-semibold">Login</label>
+            <input type="text" class="form-control rounded-0"
+                   [class.is-invalid]="editForm.controls.login.invalid && editForm.controls.login.touched"
+                   formControlName="login" placeholder="Login" />
+            @if (editForm.controls.login.errors?.['required']) {
+              <div class="invalid-feedback">Login jest wymagany.</div>
+            }
+          </div>
+
+          <!-- Email -->
+          <div class="mb-3">
+            <label class="form-label fw-semibold">E-mail</label>
+            <input type="email" class="form-control rounded-0"
+                   [class.is-invalid]="editForm.controls.email.invalid && editForm.controls.email.touched"
+                   formControlName="email" placeholder="E-mail" />
+            @if (editForm.controls.email.errors?.['required']) {
+              <div class="invalid-feedback">E-mail jest wymagany.</div>
+            }
+            @if (editForm.controls.email.errors?.['email']) {
+              <div class="invalid-feedback">Podaj prawidłowy adres e-mail.</div>
+            }
+          </div>
+
+          <!-- Password (optional) -->
+          <div class="mb-3">
+            <label class="form-label fw-semibold">Nowe hasło <span class="text-muted fw-normal">(pozostaw puste, aby nie zmieniać)</span></label>
+            <input type="password" class="form-control rounded-0"
+                   formControlName="password" placeholder="Nowe hasło (opcjonalne)" />
+          </div>
+
+          <!-- Type -->
+          <div class="mb-4">
+            <label class="form-label fw-semibold">Typ użytkownika</label>
+            <select class="form-select rounded-0" formControlName="typeId">
+              <option [value]="1">Admin</option>
+              <option [value]="2">User</option>
+            </select>
+          </div>
+
+          <!-- Readonly info -->
+          <div class="mb-3 text-muted small">
+            <span>Utworzono: {{ user.creationDate | date:'medium' }}</span>
+            &nbsp;|&nbsp;
+            <span>Ostatnie logowanie: {{ user.lastLoginDate | date:'medium' }}</span>
+          </div>
+
+          <div class="d-flex gap-2">
+            <button type="submit" class="btn btn-success w-100 rounded-0 fw-semibold"
+                    [disabled]="editForm.invalid">
+              Zapisz zmiany
+            </button>
+            <button type="button" class="btn btn-outline-secondary rounded-0" (click)="toggleEdit()">
+              Anuluj
+            </button>
+          </div>
+
+        </form>
+      }
+
+    </div>
+  </div>
+}
